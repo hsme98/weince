@@ -1,0 +1,82 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage{amsmath,amssymb}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+\begin{document}
+\begin{frame}[plain]{\textbf{Beyond Gumbel}}
+\footnotesize
+\begin{tcolorbox}[colback=violet!4, colframe=violet!50, boxrule=1pt, arc=4pt,
+    left=4pt, right=4pt, top=2pt, bottom=2pt,
+    title={\centering\scriptsize\sffamily\bfseries How the sampling model determines the loss},
+    coltitle=white, colbacktitle=violet!45, fonttitle=\sffamily\scriptsize\bfseries]
+\centering
+$
+U_j = s_{ij} + \epsilon_j
+\,,\;
+\epsilon_j \overset{\text{\tiny i.i.d.}}{\sim} \text{Gumbel}(0,1)
+\,,\;
+j = 1,\ldots,N
+\;\longrightarrow\;
+\text{sample } \sigma(1)
+$
+
+\vspace{2pt}
+{\tiny\color{violet!40}$\downarrow$}
+\vspace{2pt}
+
+$
+P\bigl(\sigma(1) {=} j\bigr) =
+\frac{\exp(s_{ij})}{\sum_{k} \exp(s_{ik})}
+\;\;\Rightarrow\;\;
+\mathcal{L}_{\text{InfoNCE}} = -\textstyle\sum_{m=1}^{M} \log
+\frac{\exp(s_{ij}^{(m)})}{\sum_{k} \exp(s_{ik}^{(m)})}
+$
+\end{tcolorbox}
+
+\vspace{2pt}
+\begin{tcolorbox}[colback=red!4, colframe=red!45, boxrule=1pt, arc=4pt,
+    left=4pt, right=4pt, top=3pt, bottom=3pt]
+\centering
+$
+U_j = \underbrace{s_{ij}}_{\text{\tiny score}} + \underbrace{\epsilon_j}_{\text{\tiny Gumbel}}
+\;\;
+\xrightarrow{\;\text{\tiny Gumbel max trick}\;}
+\;\;
+P(j^* \!= j) = \frac{\exp(s_{ij})}{\sum_k \exp(s_{ik})}
+= \textbf{softmax}
+$
+
+\vspace{3pt}
+
+{\scriptsize The \textbf{additive Gumbel noise} assumption produces the \textbf{softmax / cross-entropy} form.\\[0pt]
+This is \emph{not} a universal law; it is a \emph{modeling choice}.}
+\end{tcolorbox}
+
+\vspace{2pt}
+\begin{tcolorbox}[colback=blue!4, colframe=blue!45, boxrule=1pt, arc=4pt,
+    left=4pt, right=4pt, top=3pt, bottom=3pt,
+    title={\centering\scriptsize\sffamily\bfseries What happens in the general case?},
+    coltitle=white, colbacktitle=blue!45, fonttitle=\sffamily\scriptsize\bfseries]
+\centering
+$
+U_j \;\sim\; p\bigl(u \mid s_{ij}\bigr)
+$
+
+\vspace{2pt}
+
+{\scriptsize What is the resulting ranking probability? \; What loss should we minimize?}
+
+\vspace{1pt}
+
+$
+P\bigl(\sigma(1) {=} j\bigr) = \;?
+\qquad\qquad
+\mathcal{L} = \;?
+$
+\end{tcolorbox}
+\end{frame}
+\end{document}

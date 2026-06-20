@@ -1,0 +1,35 @@
+# Python/cache artifacts
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Local environments and build artifacts
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+simclr.egg-info/
+
+# Data, checkpoints, and experiment outputs
+data/
+datasets/
+save/
+runs/
+logs/
+outputs/
+outputs*/
+*outputs*/
+lightning_logs/
+*.tar
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.out
+*.err
+
+# Local editor/OS files
+.DS_Store
+.vscode/
+.idea/

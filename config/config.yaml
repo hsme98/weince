@@ -1,0 +1,75 @@
+# --------------------------
+# Data & loading
+# --------------------------
+# distributed training
+nodes: 1
+gpus: 1 # I recommend always assigning 1 GPU to 1 node
+nr: 0 # machine nr. in node (0 -- nodes - 1)
+dataparallel: 0 # Use DataParallel instead of DistributedDataParallel
+dataset_dir: "/home/hsmerol/weibit/data"  # where torchvision will store STL-10
+workers: 8                                 # dataloader workers
+seed: 42 # sacred handles automatic seeding when passed in the config
+# --------------------------
+# Training
+# --------------------------
+batch_size: 256
+image_size: 96
+start_epoch: 0
+epochs: 100
+dataset: "STL10"            # only STL-10 is supported in this config
+# --------------------------
+# Model
+# --------------------------
+resnet: "resnet50"
+normalize: True            # L2-normalize projector outputs (cosine head)
+projection_dim: 64         # latent dim used by SimCLR projection head
+
+# --------------------------
+# Optimization / Loss
+# --------------------------
+optimizer: "Adam"          # repo baseline uses Adam for STL-10
+weight_decay: 1.0e-6
+temperature: 0.5           # NT-Xent (InfoNCE) temperature
+
+
+# Weibit / AutoSwitch options
+policy: "pl"            # "pl", "weibit", "hard", "soft", "anchor_margin", "anchor_adv"
+beta_mode: "dynamic"    # "dynamic" or "fixed"
+beta_fixed: 4.0         # β used when beta_mode="fixed"
+diag_every: 10          # recompute EVT diagnostics every N steps
+
+
+checkpoint_every: 0
+
+# weib-top-m specific options
+use_weib_topm: False   # whether to use Weibit with top-m samples
+weib_lambda: 0.5        # λ parameter for Weibit top-m
+weib_top_m: 50          # number of top samples to consider for Weibit top
+weib_topm_mode: "weib"  # "weib" or "gate" mode for Weibit top-m
+weib_gate_q: 0.2        # q parameter for Weibit top-m gate mode
+weib_gate_kappa: 10.0   # κ parameter for Weibit top-m
+weib_shrink_alpha: 0.5
+weib_shrink_tau: 0.3
+weib_shrink_k: 5
+weib_shrink_r2_min: 0.7
+
+auto_weib_beta: False  # whether to use automatic β calibration for Weibit
+weib_beta: 4.0       # initial β for Weibit when auto_weib_beta is False
+# --------------------------
+# (Optional) resume / paths used by linear eval
+# --------------------------
+reload: False              # training from scratch
+model_path: "save"         # linear_evaluation.py will read from here
+epoch_num: 100             # checkpoint epoch to evaluate
+
+# top-m ablation options 
+use_pl_topm: False      # whether to use top-m samples in the policy
+pl_top_m: 50              # number of top samples to consider for top-m policy
+pl_lambda: 0.5         # λ parameter for top-m policy
+
+# --------------------------
+# Linear probe (used by linear_evaluation.py if not overridden by CLI)
+# --------------------------
+eval_batch_size: 256
+eval_epochs: 100       # 100 matches the repo's reported 0.829 STL-10 result
+eval_seeds: [1]

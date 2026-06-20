@@ -1,0 +1,140 @@
+% fig_coordinate_lens.tex — Conceptual figure: why the coordinate matters
+% Insert after "All Three Geometries Are Additive" slide
+\centering
+\resizebox{0.96\textwidth}{!}{%
+\begin{tikzpicture}[
+  axlabel/.style={font=\sffamily\tiny, text=black!60},
+  biglabel/.style={font=\sffamily\small\bfseries, rounded corners=3pt, inner sep=5pt},
+]
+
+% ============================================================
+% COLUMN 1: Raw score space (shared input)
+% ============================================================
+\node[font=\sffamily\footnotesize\bfseries, text=black!80] at (0, 4.6) {Cosine similarities};
+\node[font=\sffamily\tiny, text=black!50] at (0, 4.15) {(bounded in $[-1,\,1]$)};
+
+% Number line
+\draw[black!50, line width=0.8pt] (-1.6, 2.8) -- (2.0, 2.8);
+% Wall at x=1
+\fill[red!12] (1.8, 1.8) rectangle (2.15, 3.8);
+\draw[comicred, line width=2.5pt] (1.8, 1.8) -- (1.8, 3.8);
+\node[font=\sffamily\tiny\bfseries, text=comicred, rotate=90, anchor=south] at (2.05, 2.8) {wall $x{=}1$};
+
+% Tick marks
+\node[axlabel, below=2pt] at (-1.6, 2.75) {$-1$};
+\node[axlabel, below=2pt] at (-0.15, 2.75) {$0$};
+\node[axlabel, below=2pt] at (1.8, 2.75) {$1$};
+\foreach \x in {-1.6, -0.15, 1.8} {
+  \draw[black!50, line width=0.6pt] (\x, 2.72) -- (\x, 2.88);
+}
+
+% Score dots — clustered near x=1 (realistic trained model)
+\foreach \xpos/\col in {0.8/blue!60, 1.05/green!50!black, 1.28/orange!80, 1.45/violet!70, 1.58/teal!70, 1.7/blue!70} {
+  \fill[\col] (\xpos, 2.8) circle (3pt);
+}
+\node[font=\sffamily\tiny, text=black!45] at (0.45, 3.25) {scores};
+\draw[-{Stealth[length=2.5pt]}, black!25, line width=0.5pt] (0.65, 3.15) -- (0.85, 2.95);
+
+% ============================================================
+% Diverging arrows from score dots to two lenses
+% ============================================================
+\draw[-{Stealth[length=6pt, width=5pt]}, blue!50!black, line width=1.6pt]
+  (2.5, 3.5) to[out=25, in=185] (4.2, 5.5);
+\draw[-{Stealth[length=6pt, width=5pt]}, teal!70!black, line width=1.6pt]
+  (2.5, 2.1) to[out=-25, in=185] (4.2, 0.5);
+
+% Arrow labels (white bg to avoid overlap)
+\node[font=\sffamily\tiny\bfseries, text=blue!50!black,
+      fill=white, inner sep=1.5pt, rounded corners=1pt] at (3.35, 4.85) {$T(x)=x$};
+\node[font=\sffamily\tiny\bfseries, text=teal!70!black,
+      fill=white, inner sep=1.5pt, rounded corners=1pt] at (3.35, 0.85) {$T(x){=}{-}\!\log(1{-}x)$};
+
+% ============================================================
+% COLUMN 2 TOP: Gumbel / InfoNCE coordinate
+% ============================================================
+\draw[blue!35, line width=1.2pt, rounded corners=5pt, fill=blue!2]
+  (4.0, 3.4) rectangle (11.2, 7.6);
+
+\node[biglabel, fill=blue!15, draw=blue!45, text=blue!70!black] at (7.6, 7.15)
+  {Gumbel coordinate: $T(x) = x$ \quad {\normalsize(InfoNCE)}};
+
+% Plot: identity function with wall
+\begin{scope}[shift={(5.3, 3.8)}]
+  % Axes
+  \draw[-{Stealth[length=3pt]}, black!40, line width=0.6pt] (-0.1,0) -- (2.7, 0)
+    node[axlabel, below left=-1pt] {$s$};
+  \draw[-{Stealth[length=3pt]}, black!40, line width=0.6pt] (0,-0.1) -- (0, 2.2)
+    node[axlabel, left] {$T(s)$};
+  % Identity line
+  \draw[blue!55, line width=1.8pt] (0.1, 0.07) -- (2.25, 1.5);
+  % Wall
+  \fill[red!10] (2.3, -0.15) rectangle (2.6, 2.2);
+  \draw[comicred, line width=1.8pt] (2.3, -0.15) -- (2.3, 2.2);
+  % Mapped dots — still compressed near wall
+  \foreach \xp/\yp in {0.95/0.63, 1.28/0.85, 1.55/1.03, 1.75/1.17, 1.92/1.28, 2.08/1.39} {
+    \fill[blue!55, opacity=0.85] (\xp, \yp) circle (2.8pt);
+  }
+  \node[font=\sffamily\tiny\bfseries, text=comicred!80!black, align=center] at (1.6, -0.5) {wall persists};
+\end{scope}
+
+% Annotation (right side of top box)
+\node[font=\sffamily\scriptsize, text=black!65, text width=2.8cm, align=left] at (9.7, 5.0)
+  {Scores \textbf{compressed}\\near the boundary.\\[5pt]
+   Tail structure is\\
+   \textbf{non-additive}.};
+
+% Red cross
+\node[font=\fontsize{20}{20}\selectfont\bfseries, text=comicred] at (10.6, 3.8) {\ding{55}};
+
+% ============================================================
+% COLUMN 2 BOTTOM: Weibull / WEINCE coordinate
+% ============================================================
+\draw[teal!45, line width=1.2pt, rounded corners=5pt, fill=teal!2]
+  (4.0, -2.2) rectangle (11.2, 2.3);
+
+\node[biglabel, fill=teal!15, draw=teal!45, text=teal!70!black] at (7.6, 1.85)
+  {Weibull coordinate: $T(x) = -\log(1-x)$ \quad {\normalsize(WEINCE)}};
+
+% Plot: -log(1-x) function — wall unfolded
+\begin{scope}[shift={(5.3, -1.4)}]
+  % Axes
+  \draw[-{Stealth[length=3pt]}, black!40, line width=0.6pt] (-0.1,0) -- (2.7, 0)
+    node[axlabel, below left=-1pt] {$s$};
+  \draw[-{Stealth[length=3pt]}, black!40, line width=0.6pt] (0,-0.1) -- (0, 2.2)
+    node[axlabel, left] {$T(s)$};
+  % Curve: -log(1 - x/2.5) scaled
+  \draw[teal!65, line width=1.8pt, domain=0.1:2.2, samples=80]
+    plot (\x, {-1.05*ln(1 - \x/2.5)});
+  % Dashed asymptote (goes to infinity — no wall!)
+  \draw[teal!35, line width=1.2pt, dashed] (2.25, 1.7) -- (2.4, 2.15);
+  \node[font=\sffamily\scriptsize\bfseries, text=teal!55!black] at (2.6, 2.1) {$\to\!\infty$};
+  % Mapped dots — NOW spread out along the curve
+  \fill[teal!65, opacity=0.85] (0.65, 0.29) circle (2.8pt);
+  \fill[teal!65, opacity=0.85] (0.98, 0.46) circle (2.8pt);
+  \fill[teal!65, opacity=0.85] (1.32, 0.67) circle (2.8pt);
+  \fill[teal!65, opacity=0.85] (1.58, 0.87) circle (2.8pt);
+  \fill[teal!65, opacity=0.85] (1.80, 1.09) circle (2.8pt);
+  \fill[teal!65, opacity=0.85] (2.02, 1.40) circle (2.8pt);
+  \node[font=\sffamily\tiny\bfseries, text=teal!60!black, align=center] at (1.6, -0.5) {wall unfolded};
+\end{scope}
+
+% Annotation (right side of bottom box)
+\node[font=\sffamily\scriptsize, text=black!65, text width=2.8cm, align=left] at (9.7, -0.2)
+  {Boundary ``unfolded''\\to $+\infty$.\ Scores\\[-1pt]\textbf{spread out}.\\[5pt]
+   $T(X) = \eta(s) + \varepsilon$\\
+   is now \textbf{additive}.};
+
+% Green check
+\node[font=\fontsize{20}{20}\selectfont\bfseries, text=green!50!black] at (10.6, -1.65) {\ding{51}};
+
+% ============================================================
+% Bottom callout: the punchline
+% ============================================================
+\node[draw=comicorange!70, fill=comicorange!6, rounded corners=4pt, line width=1.2pt,
+      font=\sffamily\scriptsize, text=black!80, inner sep=7pt, text width=9.8cm, align=center]
+  at (5.5, -3.5)
+  {$T_{\text{Gumbel}}(x) = x$ \;\;and\;\; $T_{\text{Weibull}}(x) = -\log(1-x)$ \;\;are \textbf{non-affinely related}.\\[4pt]
+   $\Rightarrow$ No temperature rescaling $x/\tau$ can convert one into the other.};
+
+\end{tikzpicture}%
+}% end resizebox

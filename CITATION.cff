@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+title: "WEINCE: When Softmax Fails at the Top"
+message: "If you use this repository, please cite the WEINCE paper and acknowledge the original SimCLR implementation by Janne Spijkervet."
+type: software
+license: MIT
+authors:
+  - family-names: Erol
+    given-names: Melihcan
+  - family-names: Evren
+    given-names: Suat
+  - family-names: Ozel
+    given-names: Oktay
+  - family-names: Morgan
+    given-names: Alexander
+  - family-names: Ryu
+    given-names: Jongha Jon
+  - family-names: Zheng
+    given-names: Lizhong
+repository-code: "https://github.com/hsme98/weince"
+abstract: "WEINCE modifies InfoNCE with an anchor adaptive blend of the standard softmax coordinate and a Weibull endpoint shortfall coordinate, using the SimCLR training and evaluation pipeline as the base implementation."
+references:
+  - type: software
+    title: "SimCLR: PyTorch implementation of A Simple Framework for Contrastive Learning of Visual Representations"
+    authors:
+      - family-names: Spijkervet
+        given-names: Janne
+    repository-code: "https://github.com/Spijkervet/SimCLR"
