@@ -1,4 +1,4 @@
-# WEINCE: When Softmax Fails at the Top
+# ICML 2026: [WEINCE: When Softmax Fails at the Top](https://arxiv.org/abs/2606.00262)
 
 **WEINCE authors:** Melihcan Erol, Suat Evren, Oktay Ozel, Alexander Morgan, Jongha Jon Ryu, and Lizhong Zheng.
 
